@@ -1,0 +1,37 @@
+#check hw and kernel version
+uname -a 
+# list system header files
+ls /usr/include
+
+#Preprocess hello.c
+gcc -E hello.c > hello.i 
+# compile 
+gcc -S hello.i -std=c11
+man standards 
+# assemble
+gcc -c hello.s -ggdb hello.s 
+man 7 libc 
+#list all system libraries , relocatable object files 
+ls /usr/lib/x86_64-linux-gnu
+# libc shared library 
+ls /usr/lib/x86_64-linux-gnu  | grep libc.so 
+# libc archive static library 
+ls /usr/lib/x86_64-linux-gnu  | grep libc.a
+# list printf.o object library in the libc.a archive
+ar -t /usr/lib/x86_64-linux-gnu/libc.a| grep "printf.o"
+# dynamic linking 
+gcc hello.c -o dynamicexe -lc 
+# static linking 
+gcc hello.o -o staticexe -lc --static 
+# read ELF Headers 
+man readelf 
+# List all section headers in hello.o
+readelf -h hello.o
+#List all section headers in hello.o 
+objdump -h hello.o 
+#disassemble hello.o's main function with Intel format 
+objdump -d -M intel hello.o
+# view system call # for write funtion c library call wrapper 
+less /usr/include/x86_64-linux-gnu/asm/unistd_64.h
+# compile syscall for write
+gcc syscall.c
